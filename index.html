@@ -87,46 +87,74 @@
             background-color: var(--accent);
         }
         /* ecran < 768 px */
-        @media (max-width:768px){
-            .hamburger {
-                display: block;
-            }
-            .navbar {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: var(--bg-dark-secondary);
-                padding: 1rem 0;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-                z-index: 1000;
-                 /* transition fluide au lieu de display: none*/
-                 max-height: 0;
-                 overflow: hidden;
-                 opacity: 0;
-                 transition: max-height 0.35s ease , opacity 0.25s ease;
-            }
-            .navbar li {
-                text-align: center;
-                padding: 0.8rem 0;
-            }
-            .navbar li a {
-                color: var(--text-light);
-                transition: color 0.2s ease;
-            }
-            .navbar li a:hover{
-                color: var(--accent);
-            }
-            /* classe ajouté par js pour qfficher le menu mobile */
-            .navbar .active {
-                max-height: 400px; /* ajuste selon le nombre de liens */
-                opacity: 1;
-            }
-           
-        }
+      .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
 
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-primary);
+    margin: 5px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+    background-color: var(--accent);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+    background-color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+        margin-left: auto;   /* pousse le hamburger tout à droite, peu importe les autres éléments */
+        order: 3;
+    }
+
+    .phone-link {
+        display: none;       /* on le cache sur mobile, il sera accessible via le menu si besoin */
+    }
+
+    .navbar {
+        position: absolute;  /* sort le menu du flux flex du header : il ne perturbe plus le layout */
+        top: 100%;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background-color: var(--bg-dark-secondary);
+        padding: 1rem 0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        z-index: 999;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.35s ease, opacity 0.25s ease;
+    }
+
+    .navbar.active {
+        max-height: 400px;
+        opacity: 1;
+    }
+
+    .navbar a {
+        margin-left: 0;
+        text-align: center;
+        padding: 0.8rem 0;
+    }
+}
         .nav-container {
             max-width: 1100px;
             margin: 0 auto;
@@ -1076,7 +1104,9 @@
     <header class="header">
         <div class="nav-container">
             <a href="#" class="logo">ARDILES <span>DOUNGUE</span></a>
-            <button class="hamburger" id="hamburger" aria-label="menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <button class="hamburger" id="hamburger" aria-label="menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
             
             <nav class="navbar">
                 <a href="#home" class="nav-link">Accueil</a>
@@ -1613,43 +1643,34 @@
 </footer>
 <!-- ================= SCRIPT FILTRES PORTFOLIO ================= -->
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const portfolioCards = document.querySelectorAll('.portfolio-card');
+   document.addEventListener('DOMContentLoaded', () => {
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Retirer la classe active des autres boutons
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+    // --- Filtres portfolio ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const portfolioCards = document.querySelectorAll('.portfolio-card');
 
-                const filter = btn.getAttribute('data-filter');
-
-                portfolioCards.forEach(card => {
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.getAttribute('data-filter');
+            portfolioCards.forEach(card => {
+                card.style.display = (filter === 'all' || card.getAttribute('data-category') === filter)
+                    ? 'flex' : 'none';
             });
         });
     });
 
-    document.addEventListener('DOMContentLoaded', () =>{
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', function () {
-                navLinks.forEach(l=> l.classList.remove('active'));
-
-                this.classList.add('active')
-            });
+    // --- Liens actifs dans la nav ---
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
         });
     });
 
-/* menu hamburger */
-document.addEventListener('DOMContentLoaded', () => {
+    // --- Menu hamburger ---
     const hamburger = document.getElementById('hamburger');
     const navbar = document.querySelector('.navbar');
 
@@ -1659,14 +1680,15 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.setAttribute('aria-expanded', isOpen);
     });
 
-    // Bonus : referme le menu quand on clique sur un lien
-    navbar.querySelectorAll('.nav-link').forEach(link => {
+    // Ferme le menu automatiquement après un clic sur un lien (mobile)
+    navLinks.forEach(link => {
         link.addEventListener('click', () => {
             navbar.classList.remove('active');
             hamburger.classList.remove('active');
             hamburger.setAttribute('aria-expanded', 'false');
         });
     });
+
 });
 </script>
 </body>
