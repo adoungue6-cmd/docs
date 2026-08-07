@@ -75,15 +75,15 @@
             transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
         }
         /* animation du menu  en croix */
-        .hamburger .active span:nth-child(1){
-            transform: translateY(8px) rotate (45 deg);
+        .hamburger.active span:nth-child(1){
+            transform: translateY(8px) rotate (45deg);
             background-color: var(--accent);
         }
-        .hamburger .active span:nth-child(2){
+        .hamburger.active span:nth-child(2){
             opacity: 0;
         }
-        .hamburger .active span:nth-child(3){
-            transform: translateY(-8px) rotate(-45 deg);
+        .hamburger.active span:nth-child(3){
+            transform: translateY(-8px) rotate(-45deg);
             background-color: var(--accent);
         }
         /* ecran < 768 px */
@@ -91,7 +91,7 @@
             .hamburger {
                 display: block;
             }
-            .nav-menu {
+            .navbar {
                 display: flex;
                 flex-direction: column;
                 position: absolute;
@@ -108,19 +108,19 @@
                  opacity: 0;
                  transition: max-height 0.35s ease , opacity 0.25s ease;
             }
-            .nav-menu li {
+            .navbar li {
                 text-align: center;
                 padding: 0.8rem 0;
             }
-            .nav-menu li a {
+            .navbar li a {
                 color: var(--text-light);
                 transition: color 0.2s ease;
             }
-            .nav-menu li a:hover{
+            .navbar li a:hover{
                 color: var(--accent);
             }
             /* classe ajouté par js pour qfficher le menu mobile */
-            .nav-menu .active {
+            .navbar .active {
                 max-height: 400px; /* ajuste selon le nombre de liens */
                 opacity: 1;
             }
@@ -1076,7 +1076,7 @@
     <header class="header">
         <div class="nav-container">
             <a href="#" class="logo">ARDILES <span>DOUNGUE</span></a>
-            <button class="hamburger"><span></span><span></span><span></span></button>
+            <button class="hamburger" id="hamburger" aria-label="menu" aria-expanded="false"><span></span><span></span><span></span></button>
             
             <nav class="navbar">
                 <a href="#home" class="nav-link">Accueil</a>
@@ -1649,10 +1649,24 @@
     });
 
 /* menu hamburger */
-hamburger.addEventListener('click' , () => {
-    const isOpen = navmenu.classList.toggle('active');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded' , isOpen);
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.getElementById('hamburger');
+    const navbar = document.querySelector('.navbar');
+
+    hamburger.addEventListener('click', () => {
+        const isOpen = navbar.classList.toggle('active');
+        hamburger.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Bonus : referme le menu quand on clique sur un lien
+    navbar.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navbar.classList.remove('active');
+            hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+        });
+    });
 });
 </script>
 </body>
