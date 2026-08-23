@@ -9,7 +9,7 @@
             --border-light: rgba(255, 255, 255, 0.08);
             --bg-dark: #0d0d0d;
             --bg-dark-secondary: #1a1a1a;
-            --accent: #d97757;
+            --accent: #0786fc;
             --text-light: #f5f5f5;
             --font-stack: 'Inter', system-ui, -apple-system, sans-serif;
         }
@@ -204,6 +204,20 @@
             padding: 120px 24px 60px;
             text-align: center;
             background: radial-gradient(circle at center, rgba(0, 180, 216, 0.08) 0%, rgba(11, 12, 16, 1) 70%);
+            /* Lien vers l'image avec un filtre assombrissant pour garder le texte lisible */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('caspar-camille-rubin-oI6zrBj3nKw-unsplash.jpg');
+  /* Ajustement pour que l'image couvre tout l'écran de manière fluide */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Dimensionnement de la section */
+  min-height: 100vh; /* S'adapte à toute la hauteur de l'écran */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff; /* Couleur du texte pour contraster avec le fond */
+  padding: 0 20px;
         }
 
         .hero-container {
@@ -216,18 +230,7 @@
             z-index: 2;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background-color: rgba(0, 180, 216, 0.1);
-            border: 1px solid rgba(0, 180, 216, 0.3);
-            color: var(--accent);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            margin-bottom: 24px;
-        }
+      
 
         .hero-title {
             font-size: 2.8rem;
@@ -1084,3 +1087,4 @@
         .nav-link:hover {
             color: #2ec4b6;
         }
+        
