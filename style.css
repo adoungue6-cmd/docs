@@ -169,7 +169,7 @@
         }
 
         .navbar a {
-            color: var(--text-secondary);
+            color: #f6f6f6;
             text-decoration: none;
             margin-left: 28px;
             font-size: 0.9rem;
@@ -187,6 +187,7 @@
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .phone-link i {
@@ -612,6 +613,7 @@
         }
 
         .filter-btn {
+             color: #fffdfd;
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             color: var(--text-secondary);
@@ -626,7 +628,7 @@
         .filter-btn:hover,
         .filter-btn.active {
             background-color: var(--accent);
-            color: #000;
+            color: #fffdfd;
             border-color: var(--accent);
         }
 
